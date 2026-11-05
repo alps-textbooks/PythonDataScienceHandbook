@@ -165,3 +165,5 @@ sections:
 # =====================
 - file: notebooks/06.00-Figure-Code
   title: Appendix — Figure Code
+- file: about-this-book
+  title: About This Book

@@ -4,7 +4,7 @@
 
 **Python Data Science Handbook** · *Essential tools for working with data*
 
-**2Sigma School** · Alps edition · Updated October 2026
+**2Sigma School** · Alps edition · Updated November 2026
 
 This handbook covers the core of data science in Python: IPython, NumPy, pandas, Matplotlib and Scikit-Learn. This Alps edition runs the book's code in the page, with nothing to install.
 
@@ -39,10 +39,29 @@ This edition differs from its source so that the book works on Alps, where its c
 - code adjusted for the library versions that run in the browser, or for libraries and system tools that are not available there
 - data read from a place the browser can reach, or replaced where the original can no longer be loaded
 - cells shown for reference, when they need something the browser cannot do
+- notes marked **On Alps**, where a step works differently in the browser, such as making a file the text assumes you already have
 - cells marked as expected to fail, such as a blank for the reader to fill in
 - corrections to Markdown or code, so that a page renders and runs
 - corrections to typos, links and unclear wording in the text and exercises
+- current pandas and seaborn spellings in code, where the book's older ones now print deprecation warnings: `ffill()` and `bfill()` for `fillna(method=...)`, `'h'` and `'min'` for the frequency codes `'H'` and `'T'`, `'median'` and `'max'` as names in `aggregate`, `observed=False` stated in grouping and pivot tables, `fill=True` for seaborn's `shade=True`, and `df[col] = df[col].fillna(...)` for an in-place `fillna` on one column, which a newer pandas would silently ignore. The text and its tables still show the older spellings
 
 The numbering of the book's chapters is not affected: this page comes after them. The source above shows the book as its authors published it.
+
+## Datasets That Come with the Book
+
+Several examples use datasets that scikit-learn downloads the first time they run: three from figshare and one from OpenML. In the browser the figshare download can be refused, and the face photos are more than the browser can load. So this edition includes copies of the three figshare datasets in `notebooks/data/sklearn` (32 MB in all), and those pages load them with `bundled_datasets`, which takes the same arguments and returns the same data as scikit-learn's functions.
+
+| Dataset | Page | In this edition |
+|---|---|---|
+| Olivetti faces, by AT&T Laboratories Cambridge | Customizing Ticks | Included (1.4 MB) |
+| 20 Newsgroups, collected by Ken Lang | In Depth: Naive Bayes Classification | Included (15.3 MB) |
+| Labeled Faces in the Wild, by the University of Massachusetts Amherst | In Depth: Support Vector Machines, In Depth: Principal Component Analysis, In Depth: Manifold Learning, Application: A Face Detection Pipeline | Included: the faces of everyone with at least 20 photos, cropped and scaled as scikit-learn does (15.0 MB in place of 243 MB). `min_faces_per_person` of 20 or more works; a smaller value, or another size or crop, is not included |
+| MNIST handwritten digits, from OpenML | In Depth: Manifold Learning | Not included: shown for reference. The download (about 120 MB) fails in the browser |
+
+The copies were made with scikit-learn's own loaders, and give exactly the data those loaders return. `tools/build_bundled_datasets.py` rebuilds them and checks them against scikit-learn. A cell shown for reference shows its code but does not run, so the results and figures it would produce do not appear on the page.
+
+## Image Patches in the Browser
+
+*Application: A Face Detection Pipeline* takes its negative examples with `PatchExtractor`. In the browser, scikit-learn's version fails for the larger patches with "array is too big": Python there is 32-bit, and scikit-learn first builds a view of every patch position in the image, which is too large to address. The page therefore imports `PatchExtractor` from `image_patches`, a subclass that runs scikit-learn's own code and, only when that fails this way, draws the same random positions and slices those patches out one by one. Its patches are exactly scikit-learn's; `tools/check_image_patches.py` compares the two.
 
 **Questions?** For any question about this edition, or about how it differs from its source, email [support@alps.2sigma.us](mailto:support@alps.2sigma.us).
